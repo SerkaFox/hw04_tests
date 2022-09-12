@@ -21,10 +21,20 @@ class FormTests(TestCase):
             slug='test_slug',
             description='Тестовое описание',
         )
+        cls.group_2 = Group.objects.create(
+            title='Тестовая группа_2',
+            slug='test_slug_2',
+            description='Тестовое описание_2',
+        )
 
         cls.post = Post.objects.create(
             author=cls.user,
             text='Пост первый',
+            group=cls.group,
+        )
+        cls.post_1 = Post.objects.create(
+            author=cls.user,
+            text='Пост второй',
             group=cls.group,
         )
 
@@ -58,13 +68,15 @@ class FormTests(TestCase):
                 text=form_data['text'],
                 group=form_data['group']
             ).exists())
-        self.assertEqual()
+        post = Post.objects.all().first()
+        self.assertEqual(post.group, self.group)
+        self.assertEqual(post.author, self.post.author)
 
     def test_editor_posts_save(self):
         """Проверяем редактируется и сохраняется ли в базе пост"""
         form_data_edit = {
             'text': 'Другой пост',
-            'group': self.group.id,
+            'group': self.group_2.id,
         }
         response_quest = self.guest.post(
             reverse('posts:post_create'),
@@ -90,6 +102,10 @@ class FormTests(TestCase):
             )
         )
         self.assertEqual(Post.objects.count(), post_count)
+        self.assertTrue(Post.objects.filter(
+            text='Другой пост', group=self.group_2))
+        self.assertFalse(Post.objects.filter(
+            text='Другой пост', group=self.group))
 
     def test_noname_user_create_post(self):
         """ Проверка создания записи не авторизированным пользователем ."""
