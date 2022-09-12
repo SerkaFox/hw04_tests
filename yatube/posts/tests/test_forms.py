@@ -101,11 +101,11 @@ class FormTests(TestCase):
                 pk=self.post.id,
             )
         )
-        self.assertEqual(Post.objects.count(), post_count)
-        self.assertTrue(Post.objects.filter(
-            text='Другой пост', group=self.group_2))
         self.assertFalse(Post.objects.filter(
             text='Другой пост', group=self.group))
+        self.assertTrue(Post.objects.filter(
+            text='Другой пост', group=self.group_2))
+        self.assertEqual(Post.objects.count(), post_count)
 
     def test_noname_user_create_post(self):
         """ Проверка создания записи не авторизированным пользователем ."""
