@@ -39,6 +39,7 @@ class PostPagesTests(TestCase):
         self.author_post.force_login(self.author)
 
     def test_templates(self):
+        """Проверка адрессных ссылок на соответсвие шаблонам"""
         templates_pages_names = {
             reverse('posts:index_p'): 'posts/index.html',
             reverse('posts:post_create'): 'posts/create_post.html',
@@ -161,6 +162,7 @@ class PaginatorViewsTest(TestCase):
         }
 
     def test_first_page_contains_ten_records(self):
+        """Проверка количества постов на первой странице в размере 10"""
         for address, counter in self.test_paginator.items():
             with self.subTest(counter=counter):
                 self.assertEqual(len((self.author2.get(
@@ -168,6 +170,7 @@ class PaginatorViewsTest(TestCase):
                     f'Количество постов на странице {counter} не равно 10')
 
     def test_second_page_contains(self):
+        """Проверка поста на второй странице"""
         for address, counter in self.test_paginator.items():
             with self.subTest(counter=counter):
                 self.assertEqual(len((self.author2.get(

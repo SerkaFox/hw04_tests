@@ -58,6 +58,7 @@ class FormTests(TestCase):
                 text=form_data['text'],
                 group=form_data['group']
             ).exists())
+        self.assertEqual()
 
     def test_editor_posts_save(self):
         """Проверяем редактируется и сохраняется ли в базе пост"""
