@@ -25,10 +25,6 @@ class PostModelTest(TestCase):
             'pub_date': 'Дата публикации',
             'author': 'Автор поста'
         }
-        cls.field_help_text = {
-            'text': '',
-            'group': 'Группа, к которой будет относиться пост',
-        }
 
     def test_models_have_correct_object_names_group(self):
         """Проверяем, что у моделей корректно работает __str__."""
@@ -46,10 +42,12 @@ class PostModelTest(TestCase):
                     self.post._meta.get_field(field).verbose_name,
                     expected_value)
 
-    def test_help_text(self):
-        """Проверяем что verbose_name в полях совпадает с ожидаемым."""
-        for field, expected_value in self.field_help_text.items():
-            with self.subTest(field=field):
-                self.assertEqual(
-                    self.post._meta.get_field(field).help_text,
-                    expected_value)
+    def test_post_help_text(self):
+        """Проверка help_text у post."""
+        feild_help_texts = {
+            'text': '',
+            'group': '', }
+        for value, expected in feild_help_texts.items():
+            with self.subTest(value=value):
+                help_text = self.post._meta.get_field(value).help_text
+                self.assertEqual(help_text, expected)
