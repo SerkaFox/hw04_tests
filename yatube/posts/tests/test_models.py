@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import TestCase, Client
 
 from ..models import Group, Post, COUNT_OF_CUT
 
@@ -11,6 +11,8 @@ class PostModelTest(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.user = User.objects.create_user(username='auth')
+        cls.client = Client()
+        cls.client.force_login(cls.user)
         cls.group = Group.objects.create(
             title='Тестовая группа',
             slug='Тестовый слаг',
@@ -45,9 +47,9 @@ class PostModelTest(TestCase):
     def test_post_help_text(self):
         """Проверка help_text у post."""
         feild_help_texts = {
-            'text': '',
-            'group': '', }
+            'text': 'Текст',
+            'group': 'Текст нового поста', }
         for value, expected in feild_help_texts.items():
             with self.subTest(value=value):
-                help_text = self.post._meta.get_field(value).help_text
-                self.assertEqual(help_text, expected)
+                self.assertEqual(
+                    self.post._meta.get_field(value).help_text, expected)
